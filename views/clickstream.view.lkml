@@ -1,10 +1,12 @@
 view: clickstream {
-  sql_table_name: anchordemo.Retail_Store.clickstream ;;
+  sql_table_name: anchordemo.Retail_Store.clickstream_part ;;
 
   measure: count {
     type: count
     drill_fields: [detail*]
   }
+
+###### Location #######
 
   dimension: lng {
     type: number
@@ -14,6 +16,12 @@ view: clickstream {
   dimension: lat {
     type: number
     sql: ${TABLE}.lat ;;
+  }
+
+  dimension: location {
+    type: location
+    sql_latitude: ${TABLE}.lat ;;
+    sql_longitude: ${TABLE}.lng ;;
   }
 
   dimension: agent {
@@ -36,6 +44,11 @@ view: clickstream {
     sql: ${TABLE}.sessionId ;;
   }
 
+  measure: count_session_id {
+    type: count_distinct
+    sql: ${session_id} ;;
+  }
+
   dimension: page_target {
     type: string
     sql: ${TABLE}.page_target ;;
@@ -48,13 +61,8 @@ view: clickstream {
 
   dimension_group: timestamp {
     type: time
+    timeframes: [raw, time, date, week, month]
     sql: ${TABLE}.timestamp ;;
-  }
-
-  dimension: location {
-    type: location
-    sql_latitude: ${TABLE}.lat ;;
-    sql_longitude: ${TABLE}.lng ;;
   }
 
   set: detail {
