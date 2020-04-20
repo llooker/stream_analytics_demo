@@ -129,6 +129,22 @@ view: session_facts {
     sql: ${number_of_purchase_events_in_session} > 0 ;;
   }
 
+  dimension: is_abandon_cart_session {
+    type: yesno
+    sql: ${includes_cart} = 'Yes' AND ${includes_purchase} = 'No' ;;
+  }
+
+  measure: count_abandon_cart_session {
+    type: count
+    filters: [includes_cart: "Yes", includes_purchase: "No"]
+  }
+
+  measure: percent_abandon_cart {
+    type: number
+    value_format_name: percent_2
+    sql: 1.0 * ${count_abandon_cart_session} / NULLIF(${count_of_unique_sessions},0) ;;
+  }
+
   measure: count_with_cart {
     type: count
     filters: {
@@ -156,50 +172,43 @@ view: session_facts {
 
   dimension: furthest_funnel_step {
     sql: CASE
-      WHEN ${number_of_purchase_events_in_session} > 0 THEN '(4) Purchase'
-      WHEN ${number_of_cart_events_in_session} > 0 THEN '(3) Add to Cart'
-      WHEN ${number_of_browse_events_in_session} > 0 THEN '(2) Browse'
-      ELSE '(1) Land'
+      WHEN ${number_of_purchase_events_in_session} > 0 THEN '(3) Purchase'
+      WHEN ${number_of_cart_events_in_session} > 0 THEN '(2) Add to Cart'
+      WHEN ${number_of_browse_events_in_session} > 0 THEN '(1) Browse'
+      ELSE 'Land'
       END
        ;;
   }
 
-  measure: all_sessions {
-    view_label: "Funnel View"
-    label: "(1) All Sessions"
-    type: count
-    drill_fields: [detail*]
-  }
-
   measure: count_browse_or_later {
     view_label: "Funnel View"
-    label: "(2) Browse or later"
+    label: "(1) Browse or later"
     type: count
     filters: {
       field: furthest_funnel_step
-      value: "(2) Browse,(3) Add to Cart,(4) Purchase"
+      value: "(1) Browse,(2) Add to Cart,(3) Purchase"
     }
     drill_fields: [detail*]
   }
 
   measure: count_cart_or_later {
     view_label: "Funnel View"
-    label: "(3) Add to Cart or later"
+    label: "(2) Add to Cart or later"
     type: count
     filters: {
       field: furthest_funnel_step
-      value: "(3) Add to Cart,(4) Purchase"
+      value: "(2) Add to Cart,(3) Purchase"
     }
     drill_fields: [detail*]
   }
 
   measure: count_purchase {
     view_label: "Funnel View"
-    label: "(4) Purchase"
+    label: "(3) Purchase"
     type: count
     filters: {
       field: furthest_funnel_step
-      value: "(4) Purchase"
+      value: "(3) Purchase"
     }
     drill_fields: [detail*]
   }

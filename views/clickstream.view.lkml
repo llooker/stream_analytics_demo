@@ -51,7 +51,12 @@ view: clickstream {
 
   dimension: page_target {
     type: string
-    sql: ${TABLE}.page_target ;;
+    sql: ${TABLE}.page_target  ;;
+  }
+
+  dimension: product_id {
+    type: string
+    sql: REGEXP_EXTRACT(${page_target},'P_(.*)')  ;;
   }
 
   dimension: uid {
