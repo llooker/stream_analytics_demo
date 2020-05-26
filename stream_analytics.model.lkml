@@ -14,7 +14,7 @@ explore: clickstream {
     view_label: "Product Info"
     type: left_outer
     relationship: many_to_one
-    sql_on: ${clickstream.product_id} = ${product_lookup.id} ;;
+    sql_on: CAST(${clickstream.product_id} AS FLOAT64) = ${product_lookup.id} ;;
   }
 }
 
