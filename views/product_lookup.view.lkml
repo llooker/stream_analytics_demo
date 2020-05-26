@@ -4,7 +4,7 @@ view: product_lookup {
   dimension: id {
     primary_key: yes
     hidden: yes
-    type: string
+    type: number
     sql: ${TABLE}.ID ;;
   }
 

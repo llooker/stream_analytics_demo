@@ -55,7 +55,7 @@ view: clickstream {
   }
 
   dimension: product_id {
-    type: string
+    type: number
     sql: REGEXP_EXTRACT(${page_target},'P_(.*)')  ;;
   }
 
