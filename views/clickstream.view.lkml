@@ -1,5 +1,5 @@
 view: clickstream {
-  sql_table_name: anchordemo.Retail_Store.clickstream_part ;;
+  sql_table_name: anchordemo.Retail_Store.clean_clickstream_data ;;
 
   measure: count {
     type: count
@@ -36,7 +36,7 @@ view: clickstream {
 
   dimension: page_ref {
     type: string
-    sql: ${TABLE}.page_ref ;;
+    sql: ${TABLE}.pageref ;;
   }
 
   dimension: session_id {
@@ -51,7 +51,7 @@ view: clickstream {
 
   dimension: page_target {
     type: string
-    sql: ${TABLE}.page_target  ;;
+    sql: ${TABLE}.pagetarget  ;;
   }
 
   dimension: product_id {
