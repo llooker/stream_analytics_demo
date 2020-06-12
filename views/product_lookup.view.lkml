@@ -25,6 +25,10 @@ view: product_lookup {
 
   measure: total_revenue {
     type: sum
+    filters: {
+      field: session_facts.furthest_funnel_step
+      value: "(3) Purchase"
+    }
     sql: ${price} ;;
   }
 
