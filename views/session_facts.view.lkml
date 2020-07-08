@@ -8,7 +8,7 @@ view: session_facts {
         , SUM(CASE WHEN event = 'browse' THEN 1 ELSE NULL END) AS browse_events
         , SUM(CASE WHEN event = 'add-to-cart' THEN 1 ELSE NULL END) AS cart_events
         , SUM(CASE WHEN event = 'purchase' THEN 1 ELSE NULL end) AS purchase_events
-      FROM anchordemo.Retail_Store.clickstream_part
+      FROM anchordemo.Retail_Store.clean_clickstream_data
       GROUP BY sessionid
  ;;
   }
